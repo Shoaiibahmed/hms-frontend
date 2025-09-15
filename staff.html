@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staff Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">🏥 HMS</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">Staff</a></li>
+        <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+  <h3 class="mb-4 text-primary">Staff Profile</h3>
+  <form id="staffForm" class="bg-white p-4 shadow rounded">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="name" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Department</label>
+        <input type="text" id="department" class="form-control" required>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Role</label>
+        <input type="text" id="role" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Contact</label>
+        <input type="text" id="contact" class="form-control" required>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Schedule Date</label>
+        <input type="date" id="scheduleDate" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Shift</label>
+        <select id="shift" class="form-select">
+          <option value="Morning">Morning</option>
+          <option value="Evening">Evening</option>
+          <option value="Night">Night</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+  </form>
+</div>
+
+<script>
+  const token = localStorage.getItem('token');
+
+  async function loadStaffProfile() {
+    try {
+      const res = await fetch('http://localhost:3003/api/staff/profile', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!res.ok) throw new Error("Unauthorized or failed request");
+      const data = await res.json();
+
+      document.getElementById('name').value = data.name || '';
+      document.getElementById('department').value = data.department || '';
+      document.getElementById('role').value = data.role || '';
+      document.getElementById('contact').value = data.contact || '';
+
+      if (data.schedule && data.schedule.length > 0) {
+        document.getElementById('scheduleDate').value = data.schedule[0].date.split('T')[0];
+        document.getElementById('shift').value = data.schedule[0].shift;
+      }
+
+    } catch (err) {
+      alert("Error loading profile: " + err.message);
+    }
+  }
+
+  document.getElementById('staffForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      name: document.getElementById('name').value,
+      department: document.getElementById('department').value,
+      role: document.getElementById('role').value,
+      contact: document.getElementById('contact').value,
+      schedule: [
+        {
+          date: document.getElementById('scheduleDate').value,
+          shift: document.getElementById('shift').value
+        }
+      ]
+    };
+
+    const res = await fetch('http://localhost:3003/api/staff/profile', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      alert("Profile updated successfully!");
+    } else {
+      alert("Update failed");
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem('token');
+    window.location.href = 'index.html';
+  }
+
+  // Load profile on page load
+  loadStaffProfile();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ward Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">🏥 HMS</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">Wards</a></li>
+        <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container mt-4">
+  <h3 class="mb-4 text-primary">Ward Coordinator</h3>
+  <div id="accessAlert" class="alert alert-danger d-none">Access denied. Only staff can access this page.</div>
+
+  <!-- Add Ward Form -->
+  <form id="wardForm" class="mb-4">
+    <div class="row g-2">
+      <div class="col-md-3"><input type="text" class="form-control" id="wardName" placeholder="Ward Name" required></div>
+      <div class="col-md-3"><input type="text" class="form-control" id="wardDepartment" placeholder="Department" required></div>
+      <div class="col-md-6"><input type="text" class="form-control" id="wardBeds" placeholder="Beds (comma-separated, e.g., A1,A2)" required></div>
+    </div>
+    <button class="btn btn-success mt-2">Add Ward</button>
+  </form>
+
+  <!-- Ward Table -->
+  <table class="table table-bordered shadow-sm">
+    <thead class="table-primary">
+      <tr>
+        <th>Ward</th>
+        <th>Department</th>
+        <th>Beds</th>
+      </tr>
+    </thead>
+    <tbody id="wardTable"></tbody>
+  </table>
+</div>
+
+<!-- Scripts -->
+<script>
+  const token = localStorage.getItem('token');
+  const wardTable = document.getElementById('wardTable');
+  const wardForm = document.getElementById('wardForm');
+  const accessAlert = document.getElementById('accessAlert');
+
+  async function checkRole() {
+    try {
+      const res = await fetch('http://localhost:3003/api/staff/profile', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Not staff');
+      fetchWards();
+    } catch (err) {
+      accessAlert.classList.remove('d-none');
+      wardForm.classList.add('d-none');
+    }
+  }
+
+  async function fetchWards() {
+    const res = await fetch('http://localhost:3005/api/wards', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const wards = await res.json();
+    wardTable.innerHTML = '';
+    wards.forEach(ward => {
+      wardTable.innerHTML += `
+        <tr>
+          <td>${ward.name}</td>
+          <td>${ward.department}</td>
+          <td>
+            <ul class="list-unstyled">
+              ${ward.beds.map(bed => `
+                <li class="mb-1">
+                  <strong>${bed.bedNumber}</strong> - 
+                  ${bed.isOccupied ? 
+                    `<span class="text-danger">Occupied</span> 
+                    <button class="btn btn-sm btn-outline-secondary ms-2" onclick="vacateBed('${bed._id}')">Vacate</button>` :
+                    `<span class="text-success">Available</span> 
+                    <button class="btn btn-sm btn-outline-primary ms-2" onclick="assignBed('${bed._id}')">Assign</button>`}
+                </li>`).join('')}
+            </ul>
+          </td>
+        </tr>`;
+    });
+  }
+
+  wardForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('wardName').value;
+    const department = document.getElementById('wardDepartment').value;
+    const bedsRaw = document.getElementById('wardBeds').value;
+    const beds = bedsRaw.split(',').map(b => ({ bedNumber: b.trim() }));
+
+    const res = await fetch('http://localhost:3005/api/wards/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ name, department, beds })
+    });
+
+    if (res.ok) {
+      wardForm.reset();
+      fetchWards();
+    } else {
+      alert("Failed to add ward.");
+    }
+  });
+
+  async function assignBed(bedId) {
+    const patientId = prompt("Enter patientId to assign to this bed:");
+    if (!patientId) return;
+
+    const res = await fetch(`http://localhost:3005/api/wards/assign/${bedId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ patientId })
+    });
+
+    if (res.ok) fetchWards();
+    else alert("Failed to assign bed.");
+  }
+
+  async function vacateBed(bedId) {
+    if (!confirm("Are you sure you want to vacate this bed?")) return;
+
+    const res = await fetch(`http://localhost:3005/api/wards/vacate/${bedId}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (res.ok) fetchWards();
+    else alert("Failed to vacate bed.");
+  }
+
+  function logout() {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+  }
+
+  checkRole();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
