@@ -12,10 +12,10 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">🏥 HMS</a>
+    <a class="navbar-brand" href="index.html">🏥 HMS</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link active" href="#">Wards</a></li>
         <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="logout()">Logout</a></li>
       </ul>
@@ -60,7 +60,7 @@
 
   async function checkRole() {
     try {
-      const res = await fetch('http://localhost:3003/api/staff/profile', {
+      const res = await fetch('http://localhost:3103/api/staff/profile', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!res.ok) throw new Error('Not staff');
@@ -72,7 +72,7 @@
   }
 
   async function fetchWards() {
-    const res = await fetch('http://localhost:3005/api/wards', {
+    const res = await fetch('http://localhost:3105/api/wards', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const wards = await res.json();
@@ -106,7 +106,7 @@
     const bedsRaw = document.getElementById('wardBeds').value;
     const beds = bedsRaw.split(',').map(b => ({ bedNumber: b.trim() }));
 
-    const res = await fetch('http://localhost:3005/api/wards/add', {
+    const res = await fetch('http://localhost:3105/api/wards/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +127,7 @@
     const patientId = prompt("Enter patientId to assign to this bed:");
     if (!patientId) return;
 
-    const res = await fetch(`http://localhost:3005/api/wards/assign/${bedId}`, {
+    const res = await fetch(`http://localhost:3105/api/wards/assign/${bedId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -143,7 +143,7 @@
   async function vacateBed(bedId) {
     if (!confirm("Are you sure you want to vacate this bed?")) return;
 
-    const res = await fetch(`http://localhost:3005/api/wards/vacate/${bedId}`, {
+    const res = await fetch(`http://localhost:3105/api/wards/vacate/${bedId}`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${token}` }
     });

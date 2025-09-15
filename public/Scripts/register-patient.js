@@ -7,7 +7,7 @@ document.getElementById('patientRegisterForm').addEventListener('submit', async 
   const errorBox = document.getElementById('registerError');
 
   try {
-    const res = await fetch('http://localhost:3000/api/auth/register/patient', {
+    const res = await fetch('http://localhost:3100/api/auth/register/patient', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })

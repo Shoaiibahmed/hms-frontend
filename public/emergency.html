@@ -12,10 +12,10 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">🏥 HMS</a>
+  <a class="navbar-brand" href="index.html">🏥 HMS</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link active" href="#">Emergency</a></li>
         <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="logout()">Logout</a></li>
       </ul>
@@ -68,7 +68,7 @@
     const type = document.getElementById('type').value;
     const description = document.getElementById('description').value;
 
-    const res = await fetch('http://localhost:3006/api/emergency/report', {
+    const res = await fetch('http://localhost:3106/api/emergency/report', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +87,7 @@
   });
 
   async function loadEmergencies() {
-    const res = await fetch('http://localhost:3006/api/emergency/active', {
+    const res = await fetch('http://localhost:3106/api/emergency/active', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -116,7 +116,7 @@
     const confirmed = confirm("Close this emergency?");
     if (!confirmed) return;
 
-    const res = await fetch(`http://localhost:3006/api/emergency/update/${id}`, {
+    const res = await fetch(`http://localhost:3106/api/emergency/update/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

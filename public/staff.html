@@ -12,10 +12,10 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">🏥 HMS</a>
+  <a class="navbar-brand" href="index.html">🏥 HMS</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link active" href="#">Staff</a></li>
         <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="logout()">Logout</a></li>
       </ul>
@@ -70,7 +70,7 @@
 
   async function loadStaffProfile() {
     try {
-      const res = await fetch('http://localhost:3003/api/staff/profile', {
+      const res = await fetch('http://localhost:3103/api/staff/profile', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -108,7 +108,7 @@
       ]
     };
 
-    const res = await fetch('http://localhost:3003/api/staff/profile', {
+    const res = await fetch('http://localhost:3103/api/staff/profile', {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,

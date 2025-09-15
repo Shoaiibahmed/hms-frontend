@@ -7,7 +7,7 @@
   const errorBox = document.getElementById('registerError');
 
   try {
-    const res = await fetch('http://localhost:3000/api/auth/register/staff', {
+    const res = await fetch('http://localhost:3100/api/auth/register/staff', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })

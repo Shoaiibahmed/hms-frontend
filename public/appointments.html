@@ -12,10 +12,10 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">🏥 HMS</a>
+   <a class="navbar-brand" href="index.html">🏥 HMS</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link active" href="#">Appointments</a></li>
         <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="logout()">Logout</a></li>
       </ul>
@@ -79,7 +79,7 @@
   const token = localStorage.getItem('token');
 
   async function fetchAppointments() {
-    const res = await fetch('http://localhost:3004/api/appointments/my', {
+    const res = await fetch('http://localhost:3104/api/appointments/my', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const appointments = await res.json();
@@ -116,7 +116,7 @@
       time: document.getElementById('time').value,
       reason: document.getElementById('reason').value
     };
-    const res = await fetch('http://localhost:3004/api/appointments/book', {
+    const res = await fetch('http://localhost:3104/api/appointments/book', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +147,7 @@
       time: document.getElementById('updateTime').value,
       reason: document.getElementById('updateReason').value
     };
-    const res = await fetch(`http://localhost:3004/api/appointments/${id}`, {
+    const res = await fetch(`http://localhost:3104/api/appointments/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -165,7 +165,7 @@
 
   async function deleteAppointment(id) {
     if (!confirm('Delete appointment?')) return;
-    const res = await fetch(`http://localhost:3004/api/appointments/${id}`, {
+    const res = await fetch(`http://localhost:3104/api/appointments/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });
