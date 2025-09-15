@@ -22,6 +22,7 @@
           <li class="nav-item"><a class="nav-link" href="#">Appointments</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Emergency</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Ward</a></li>
+          <li class="nav-item"><a class="nav-link" href="patients.html">Patients</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
           <li class="nav-item"><a class="nav-link text-warning" href="#" onclick="logout()">Logout</a></li>
         </ul>
@@ -31,59 +32,73 @@
 
   <!-- Dashboard Content -->
   <div class="container mt-4">
-    <div class="row g-4">
-      <!-- Appointments -->
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h5>📅 Appointments</h5>
-          </div>
-          <div class="card-body">
-            <p>Manage, view or schedule appointments.</p>
-            <a href="#" class="btn btn-primary">View Appointments</a>
-          </div>
-        </div>
+<div class="row g-4">
+  <!-- Appointments -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5>📅 Appointments</h5>
       </div>
-
-      <!-- Emergency -->
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h5>🚨 Emergency</h5>
-          </div>
-          <div class="card-body">
-            <p>Report or monitor emergency cases.</p>
-            <a href="#" class="btn btn-primary">Access Emergency</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ward -->
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h5>🛏️ Ward Management</h5>
-          </div>
-          <div class="card-body">
-            <p>Monitor and assign beds and ward units.</p>
-            <a href="#" class="btn btn-primary">Manage Wards</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Profile -->
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h5>👤 Profile</h5>
-          </div>
-          <div class="card-body">
-            <p>Update your personal information.</p>
-            <a href="#" class="btn btn-primary">Edit Profile</a>
-          </div>
-        </div>
+      <div class="card-body">
+        <p>Manage, view or schedule appointments.</p>
+        <a href="appointments.html" class="btn btn-primary">View Appointments</a>
       </div>
     </div>
+  </div>
+
+  <!-- Emergency -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5>🚨 Emergency</h5>
+      </div>
+      <div class="card-body">
+        <p>Report or monitor emergency cases.</p>
+        <a href="emergency.html" class="btn btn-primary">Access Emergency</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ward -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5>🛏️ Ward Management</h5>
+      </div>
+      <div class="card-body">
+        <p>Monitor and assign beds and ward units.</p>
+        <a href="ward.html" class="btn btn-primary">Manage Wards</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patients -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5>🧑‍⚕️ Patient Records</h5>
+      </div>
+      <div class="card-body">
+        <p>View, update or delete patient information.</p>
+        <a href="patients.html" class="btn btn-primary">Manage Patients</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile -->
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5>👤 Profile</h5>
+      </div>
+      <div class="card-body">
+        <p>Update your personal information.</p>
+        <a href="profile.html" class="btn btn-primary">Edit Profile</a>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div>
 
   <!-- JS -->
